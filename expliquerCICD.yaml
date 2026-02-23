@@ -1,0 +1,25 @@
+name: Build and push docker image #haida lname ana bektbo metl mabade 
+
+on: # hone b2elo listen lal events lirah ekteblak yehon
+  push: 
+    #branches: [ $main ] #listen la aya push byo7sal 3ala el branche li huwe main eza ana hadatetlo main w fihot hot "#aya bracnch tene 8er main
+     #pull_request: 
+    # branches: [ $main ] # w kmn listen la aya pull request byohsal 3ala lbrach main 
+          
+jobs:      #son but est de faire build and push 
+  build-and-push:
+    runs-on: ubuntu-latest #hay bhadeda hasab l os lal virtual machine aw EC2 lira7 ya3ml github run lal workflow 3laya 
+
+    steps: #lsteps taba3 ljob ya3ne chu l echya yali rah yru7 ynafeza w 3atul hk bikuno chaklon 3atul bl step awal chi bikun el name w ba3den ya ama luses aw el run w fi kmn en aw id-working directory w continuig error bs marah nehke 3anon hone 
+      - name: checkout the repo #(cloner repo de github sur la machine tempraire du serveur CI githubAction) # hay l uses workflow action bta3mel checkout lal code li juwa hay el repository 
+        uses: actions/checkout@v6 #hayda el workflow ma3 el version ta3ulto ble2i bl github.com:actions , hay luses daruriye law chu makn el language taba3 l app lmsta3mlo lhadaf mena eno ta3ml clon lal repositry juwa el CI enviroment cz baleha la el dockerfile wala el code wala el package.json seront disponible 
+
+      - name: use node
+        uses: actions/setup-node@v6 #hole jebton bel github.com bl search marketplace kerml a3ml setup la node lay2der ya3ml run lal app w test 
+        with:
+          node-version: 24 #hone eltelo st3ml hay el version specifique de node 
+      - name: installer dependences node_module    
+        run: npm ci #binazel node_module 
+      - name: faire Run test   
+        run: npm test #ba3mel run lal test la et2akd eno l app 3am temche sas erreur 
+
